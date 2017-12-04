@@ -1,33 +1,24 @@
-library(htmltab)
+library(jsonlite)
 library(dplyr)
+tweet_file <- "DataCollection/sample1.json"
+tweet_list <- fromJSON(tweet_file, simplifyVector = FALSE)
+# Each [[i]] is a tweet
 
-tweet_url <- "https://www.socialseer.com/resources/us-senator-twitter-accounts/"
-senate_twitters <- htmltab(doc = tweet_url, which = '//*[@id="post-109"]/div/table[1]/tbody') %>%
-  select(1:3) %>%
-  filter(Senator != "Saxby Chambliss")
-colnames(senate_twitters) <- c("state", "senator", "twitter")
-rownames(senate_twitters) <- NULL
-senate_twitters$twitter <- sub("@", "", senate_twitters$twitter)
-senate_twitters[34, 3] <- "RandPaul"
-senate_twitters[58, 3] <- "SenatorHassan"
-senate_twitters[79, 3] <- "LindseyGrahamSC"
-senate_twitters[86, 3] <- "tedcruz"
-senate_twitters[90, 3] <- "SenSanders"
-senate_twitters$party <- factor(c(1,1,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,1,1,1,
-                           0,0,1,1,0,0,0,1,1,1,1,1,1,1,1,1,3,1,0,0,
-                           0,0,0,0,0,0,1,1,0,1,1,0,1,1,0,1,0,0,0,0,
-                           0,0,0,0,1,1,0,1,0,1,1,1,0,0,0,1,0,0,1,1,
-                           1,1,1,1,1,1,1,1,0,3,0,0,0,0,1,0,0,1,1,1),
-                           levels = c("0", "1", "3"),
-                           labels = c("Democrat", "Republican", "Independent"))
-
-twitter_data <- data.frame(matrix(ncol = 6, nrow = 0))
-x <- c("id", "created_at", "text","user","favorite_count","retweet_count")
-colnames(twitter_data) <- x
-
-for (handle in senate_twitters$twitter) {
-  file <- paste0("SenateData/", handle, "_tweets.csv")
-  data <- read.csv(file)
-  twitter_data <- rbind(twitter_data, data)
+tweet_df <- matrix(ncol = 6, nrow = 0)
+for (tweet in tweet_list) {
+  tweet_df <- rbind(tweet_df, c(tweet$id_str,
+                    tweet$full_text,
+                    tweet$created_at,
+                    tweet$user$screen_name,
+                    tweet$favorite_count,
+                    tweet$retweet_count))
 }
-write.csv(twitter_data, file = "full_senate.csv", row.names = FALSE)
+tweet_df <- data.frame(tweet_df) %>%
+  mutate(X2 = gsub('[‘’“”"]', "'", X2)) # change "smart quotes" to regular single quote
+colnames(tweet_df) <- c("doc_id", "text", "timestamp","username", "favorites","retweets")
+# saved_tweet_df <- tweet_df
+
+congress_df <- read.csv("legislators-current.csv") %>%
+  select(last_name, first_name, type, state, party, twitter)
+
+#missing <- unique(tweet_df$username)[-which(unique(tweet_df$username) %in% congress_df$twitter)]
