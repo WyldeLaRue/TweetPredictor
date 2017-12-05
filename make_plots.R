@@ -22,7 +22,7 @@ tidy_freqs_hash_tags <- filter(tidy_freqs, str_detect(word, "^#"))
 tidy_freqs_no_tags <- filter(tidy_freqs, !str_detect(word, "^@|^#"))
 
 # all words
-ggplot(tidy_freqs, aes(Democrat, Republican)) +
+all_words_dot <- ggplot(tidy_freqs, aes(Democrat, Republican)) +
   geom_jitter(alpha = 0.05, size = 2.5, width = 0.25, height = 0.25) +
   geom_text(aes(label = word), check_overlap = TRUE,
             hjust = "inward", vjust = "inward") +
@@ -32,7 +32,7 @@ ggplot(tidy_freqs, aes(Democrat, Republican)) +
   ggtitle("All Terms Used, by Political Party")
 
 #user tags
-ggplot(tidy_freqs_user_tags, aes(Democrat, Republican)) +
+user_tags_dot <- ggplot(tidy_freqs_user_tags, aes(Democrat, Republican)) +
   geom_jitter(alpha = 0.25, size = 2.5, width = 0.25, height = 0.25) +
   geom_text(aes(label = word), check_overlap = TRUE,
             hjust = "inward", vjust = "inward") +
@@ -42,7 +42,7 @@ ggplot(tidy_freqs_user_tags, aes(Democrat, Republican)) +
   ggtitle("Tagged Users, by Political Party")
 
 # hashtags
-ggplot(tidy_freqs_hash_tags, aes(Democrat, Republican)) +
+hash_tags_dot <- ggplot(tidy_freqs_hash_tags, aes(Democrat, Republican)) +
   geom_jitter(alpha = 0.25, size = 2.5, width = 0.25, height = 0.25) +
   geom_text(aes(label = word), check_overlap = TRUE,
             hjust = "inward", vjust = "inward") +
@@ -52,7 +52,7 @@ ggplot(tidy_freqs_hash_tags, aes(Democrat, Republican)) +
   ggtitle("Hashtags, by Political Party")
 
 # regular words
-ggplot(tidy_freqs_no_tags, aes(Democrat, Republican)) +
+reg_words_dot <- ggplot(tidy_freqs_no_tags, aes(Democrat, Republican)) +
   geom_jitter(alpha = 0.05, size = 2.5, width = 0.25, height = 0.25) +
   geom_text(aes(label = word), check_overlap = TRUE,
             hjust = "inward", vjust = "inward") +
@@ -69,7 +69,7 @@ log_ratios <- tidy_freqs %>%
 
 head(arrange(log_ratios, abs(logratio)))
 # all terms
-log_ratios %>%
+all_words_bar <- log_ratios %>%
   group_by(logratio < 0) %>%
   top_n(15, abs(logratio)) %>%
   ungroup() %>%
@@ -81,7 +81,7 @@ log_ratios %>%
   ggtitle("Highest Usage Difference, by Party - All Terms") +
   scale_fill_manual(name = "", labels = c("Democrat", "Republican"), values=c("#00BFC4","#F8766D"))
 # user tags
-log_ratios %>%
+user_tags_bar <- log_ratios %>%
   filter(str_detect(word, "^@")) %>%
   group_by(logratio < 0) %>%
   top_n(10, abs(logratio)) %>%
@@ -94,7 +94,7 @@ log_ratios %>%
   ggtitle("Highest Usage Difference, by Party - User Tags") +
   scale_fill_manual(name = "", labels = c("Democrat", "Republican"), values=c("#00BFC4","#F8766D"))
 #hashtags
-log_ratios %>%
+hash_tags_bar <- log_ratios %>%
   filter(str_detect(word, "^#")) %>%
   group_by(logratio < 0) %>%
   top_n(15, abs(logratio)) %>%
@@ -108,7 +108,7 @@ log_ratios %>%
   scale_fill_manual(name = "", labels = c("Democrat", "Republican"), values=c("#00BFC4","#F8766D"))
 
 # regular terms
-log_ratios %>%
+reg_words_bar <- log_ratios %>%
   filter(!str_detect(word, "^#|^@")) %>%
   group_by(logratio < 0) %>%
   top_n(15, abs(logratio)) %>%
@@ -120,3 +120,12 @@ log_ratios %>%
   ylab("log odds ratio (Democrat/Repubican)") +
   ggtitle("Highest Usage Difference, by Party - Regular Terms") +
   scale_fill_manual(name = "", labels = c("Democrat", "Republican"), values=c("#00BFC4","#F8766D"))
+
+ggsave(filename="images/all_words_dot.png", plot=all_words_dot)
+ggsave(filename="images/all_words_bar.png", plot=all_words_bar)
+ggsave(filename="images/user_tags_dot.png", plot=user_tags_dot)
+ggsave(filename="images/user_tags_bar.png", plot=user_tags_bar)
+ggsave(filename="images/hash_tags_dot.png", plot=hash_tags_dot)
+ggsave(filename="images/hash_tags_bar.png", plot=hash_tags_bar)
+ggsave(filename="images/reg_words_dot.png", plot=reg_words_dot)
+ggsave(filename="images/reg_words_bar.png", plot=reg_words_bar)
