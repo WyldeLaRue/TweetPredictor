@@ -1,0 +1,93 @@
+---
+title: "Ain't No Party Like A Political Party"
+author: "Lee | Moore | Wylde-Larue"
+date: "December 5th 2017"
+output: ioslides_presentation
+---
+
+## Ignore this
+```{r, setup = TRUE, echo = FALSE}
+set.seed(1)
+library(ggplot2)
+library(dplyr)
+fivefold <- function(x) {
+  x$fold <- c(sample(1:5, size = nrow(x), replace = TRUE))
+  MSE <- rep(NA, 5)
+
+  for(j in 1:5) {
+    testd <- x %>%
+      filter(fold == j)
+    
+    traind <- x %>%
+      filter(fold != j)
+
+    trainmodel <- glm(data = traind , am ~ mpg , family = binomial)
+    
+    MSE[j] <- mean((testd$am - predict(trainmodel, newdata = testd, type = "response")))
+  }
+  
+  mean(MSE)
+}
+```
+
+
+## Introduction
+
+Our research question: Can we predict the political party of a twitter user?        
+To this end, we fit a logistic model to classify and make inferences on the political party of politician's twitters.   
+
+## Naive Logistic Regression Model
+
+```{r}
+#model that just tosses some predictors in on party
+d <- mtcars
+d$am <- as.logical(d$am)
+m1 <- glm(data = d , am ~ mpg , family = binomial)
+#misclassification rate of this model using 5fold CV
+fivefold(d)
+```
+
+## Visualize
+
+Could visualize a model by doing logit classification and plotting on he first principal component (2D seeable graph)
+```{r}
+#k encodes tru party
+k=0
+p1 <- ggplot(d, aes(x=d$mpg, y=d$am, color = as.factor(k))) + geom_point()
+p1
+p2 <- ggplot(d, aes(x=d$mpg, y=(predict(m1, newdata = d, type = "response")), color = as.factor(k))) + geom_point()
+p2
+```
+
+## Weaknesses of Previous Model
+
+improvements
+
+## Improved Model
+
+```{r}
+# new model
+
+# new predictive capability
+
+```
+
+## Visualize Impoved Model
+
+```{r}
+#PCA plotting
+
+```
+
+## Outliers & Interesting Things
+
+and what outliers mean
+interpretations of data, interpretations of models and coefficients
+
+## Method Continued
+
+To expand upon this research question, "Can you predict the political party of a twitter user using their tweet history," some improvements could be made:
+
+- Training and testing on members of the population to make a model that works more generally, instead of on politicians due to charged language.  
+- Considering different interpretations of the data such as quantile-based instead of ratio-based numerics.  
+- 
