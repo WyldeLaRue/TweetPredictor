@@ -21,4 +21,10 @@ colnames(tweet_df) <- c("doc_id", "text", "timestamp","username", "favorites","r
 congress_df <- read.csv("legislators-current.csv") %>%
   select(last_name, first_name, type, state, party, twitter)
 
-#missing <- unique(tweet_df$username)[-which(unique(tweet_df$username) %in% congress_df$twitter)]
+missing <- unique(tweet_df$username)[-which(unique(tweet_df$username) %in% congress_df$twitter)]
+
+fake_data <- data.frame(id = tweet_df$doc_id,
+                        fake_news = runif(10001),
+                        maga = runif(10001),
+                        health_care <- runif(10001),
+                        gun_control <- runif(10001))
