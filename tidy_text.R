@@ -7,7 +7,6 @@ library(tidytext)
 library(tidyr)
 library(tibble)
 library(tm)
-tweet_df <- saved_tweet_df
 
 #define groupings
 group_phrases <- function(string) {
@@ -26,15 +25,15 @@ group_phrases <- function(string) {
 # start simplifying text
 str_sub(tweet_df$timestamp, 21, 26) <- "" 
 tweet_df <- tweet_df %>%
-  mutate(timestamp = parse_date_time(timestamp, "a b d HMS Y"),
-         is_retweet = str_detect(text, "^RT"))
+  mutate(timestamp = parse_date_time(timestamp, "a b d HMS Y"))
 
 replace_reg <- " ?https?.*\\S|&amp;|&lt;|&gt;|RT|['\",.?!]"
 unnest_reg <- "([^A-Za-z_\\d#@']|'(?![A-Za-z_\\d#@]))"
 
 tidy_tweets <- tweet_df %>% 
   mutate(text = str_replace_all(text, replace_reg, ""),
-         text = removeNumbers(text)) %>%
+         text = removeNumbers(text),
+         text = group_phrases(text)) %>%
   unnest_tokens(word, text, token = "regex", pattern = unnest_reg) %>%
   filter(!word %in% stop_words$word,
          str_detect(word, "[a-z]"))
@@ -50,6 +49,7 @@ frequency <- tidy_tweets %>%
   spread(username, freq, fill = 0) %>%
   filter()
 
+# only keep words that get used by at least 10 people
 row_exists <- apply(frequency[-1], 1, function(x) length(which(x!=0)))
 frequency <- filter(frequency, word %in% word[row_exists >= 10])
 

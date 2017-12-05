@@ -11,7 +11,10 @@ party_id <- c("Democrat","Republican","Republican","Democrat","Democrat",
            "Democrat","Republican","Republican","Democrat","Republican",
            "Republican","Democrat","Republican","Republican","Democrat",
            "Democrat","Democrat","Democrat","Democrat","Republican",
-           "Democrat","Republican","Republican","Democrat")
+           "Democrat","Republican","Republican","Democrat","Republican",
+           "Republican","Democrat","Republican","Democrat","Democrat",
+           "Republican","Democrat","Democrat","Republican","Republican",
+           "Democrat","Democrat","Republican","Democrat")
 
 congress_df_short <- congress_df %>%
   select(party_id, twitter) %>%

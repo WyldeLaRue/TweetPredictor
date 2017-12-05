@@ -23,43 +23,43 @@ tidy_freqs_no_tags <- filter(tidy_freqs, !str_detect(word, "^@|^#"))
 
 # all words
 ggplot(tidy_freqs, aes(Democrat, Republican)) +
-  geom_jitter(alpha = 0.1, size = 2.5, width = 0.25, height = 0.25) +
+  geom_jitter(alpha = 0.05, size = 2.5, width = 0.25, height = 0.25) +
   geom_text(aes(label = word), check_overlap = TRUE,
             hjust = "inward", vjust = "inward") +
   scale_x_log10(labels = percent_format(), expand = c(.1,.1)) +
   scale_y_log10(labels = percent_format()) +
   geom_abline(color = "red") +
-  title"All Terms Used, by Political Party")
+  ggtitle("All Terms Used, by Political Party")
 
 #user tags
 ggplot(tidy_freqs_user_tags, aes(Democrat, Republican)) +
-  geom_jitter(alpha = 0.1, size = 2.5, width = 0.25, height = 0.25) +
+  geom_jitter(alpha = 0.25, size = 2.5, width = 0.25, height = 0.25) +
   geom_text(aes(label = word), check_overlap = TRUE,
             hjust = "inward", vjust = "inward") +
   scale_x_log10(labels = percent_format(), expand = c(.1,.1)) +
   scale_y_log10(labels = percent_format()) +
   geom_abline(color = "red") +
-  title("Tagged Users, by Political Party")
+  ggtitle("Tagged Users, by Political Party")
 
 # hashtags
 ggplot(tidy_freqs_hash_tags, aes(Democrat, Republican)) +
-  geom_jitter(alpha = 0.1, size = 2.5, width = 0.25, height = 0.25) +
+  geom_jitter(alpha = 0.25, size = 2.5, width = 0.25, height = 0.25) +
   geom_text(aes(label = word), check_overlap = TRUE,
             hjust = "inward", vjust = "inward") +
   scale_x_log10(labels = percent_format(), expand = c(.1,.1)) +
   scale_y_log10(labels = percent_format()) +
   geom_abline(color = "red") +
-  title("Hashtags, by Political Party")
+  ggtitle("Hashtags, by Political Party")
 
 # regular words
 ggplot(tidy_freqs_no_tags, aes(Democrat, Republican)) +
-  geom_jitter(alpha = 0.1, size = 2.5, width = 0.25, height = 0.25) +
+  geom_jitter(alpha = 0.05, size = 2.5, width = 0.25, height = 0.25) +
   geom_text(aes(label = word), check_overlap = TRUE,
             hjust = "inward", vjust = "inward") +
   scale_x_log10(labels = percent_format(), expand = c(.1,.1)) +
   scale_y_log10(labels = percent_format()) +
   geom_abline(color = "red") +
-  title("Regular Words Used, by Political Party")
+  ggtitle("Regular Words Used, by Political Party")
 
 
 log_ratios <- tidy_freqs %>%
