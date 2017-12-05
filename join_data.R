@@ -17,7 +17,7 @@ tweet_df <- data.frame(tweet_df) # change "smart quotes" to regular single quote
 colnames(tweet_df) <- c("doc_id", "text", "timestamp","username", "favorites","retweets")
 # saved_tweet_df <- tweet_df
 
-congress_df <- read.csv("legislators-current.csv") %>%
+congress_df <- read.csv("DataCollection/legislators-current.csv") %>%
   select(last_name, first_name, type, state, party, twitter)
 
 missing <- unique(tweet_df$username)[-which(unique(tweet_df$username) %in% congress_df$twitter)]
