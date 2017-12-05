@@ -18,7 +18,8 @@ colnames(tweet_df) <- c("doc_id", "text", "timestamp","username", "favorites","r
 # saved_tweet_df <- tweet_df
 
 congress_df <- read.csv("DataCollection/legislators-current.csv") %>%
-  select(last_name, first_name, type, state, party, twitter)
+  select(last_name, first_name, type, state, party, twitter) %>%
+  rename(party_id = party)
 
 missing <- unique(tweet_df$username)[-which(unique(tweet_df$username) %in% congress_df$twitter)]
 
