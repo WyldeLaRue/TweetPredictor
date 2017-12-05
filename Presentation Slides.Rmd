@@ -74,8 +74,39 @@ improvements
 
 ## Visualize Impoved Model
 
-```{r}
+``{r}
 #PCA plotting
+means <-kmeans(x = d[,-1], centers = 2, iter.max = 10, nstart = 20)
+pca1 <-prcomp(d[,-1])
+PC1 <- pca1$x[,1]
+PC2 <- pca1$x[,2]
+df <-data.frame(PC1, PC2, k = means$cluster)
+p1 <-ggplot(df,aes(x=PC1, y=PC2, color =as.factor(k))) + geom_point()
+plot(p1)
+
+# Skree plot - is there only 2 parties?
+km1 <- kmeans(d[,-1], centers = 1)
+km2 <- kmeans(d[,-1], centers = 2)
+km3 <- kmeans(d[,-1], centers = 3)
+km4 <- kmeans(d[,-1], centers = 4)
+km5 <- kmeans(d[,-1], centers = 5)
+
+bub <- data.frame(ClusterNumber = 1:5,
+                  tot.within.ss = c(km1$tot.withinss,
+                                    km2$tot.withinss,
+                                    km3$tot.withinss,
+                                    km4$tot.withinss,
+                                    km5$tot.withinss
+                                    ))
+ggplot(bub, aes(x = ClusterNumber, y = tot.within.ss)) +
+  geom_line() + 
+  geom_point()
+
+# Make GGplots which display parties on the plot
+newd <- data.frame(PC1, PC2, k = votemeans$cluster, party = r1$votes$party)
+
+plotvote <- ggplot(newd, aes(x=PC1, y=PC2, color = as.factor(k))) + geom_point() 
+plotvote
 
 ```
 
