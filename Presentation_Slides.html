@@ -153,7 +153,21 @@ p2</pre>
 
 </article></slide><slide class=''><hgroup><h2>Visualize Impoved Model</h2></hgroup><article  id="visualize-impoved-model">
 
-<pre class = 'prettyprint lang-r'>#PCA plotting</pre>
+<p>``{r} #PCA plotting means &lt;-kmeans(x = d[,-1], centers = 2, iter.max = 10, nstart = 20) pca1 &lt;-prcomp(d[,-1]) PC1 &lt;- pca1\(x[,1] PC2 &lt;- pca1\)x[,2] df &lt;-data.frame(PC1, PC2, k = means$cluster) p1 &lt;-ggplot(df,aes(x=PC1, y=PC2, color =as.factor(k))) + geom_point() plot(p1)</p>
+
+</article></slide><slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>Skree plot - is there only 2 parties?</h2></hgroup><article  id="skree-plot---is-there-only-2-parties">
+
+<p>km1 &lt;- kmeans(d[,-1], centers = 1) km2 &lt;- kmeans(d[,-1], centers = 2) km3 &lt;- kmeans(d[,-1], centers = 3) km4 &lt;- kmeans(d[,-1], centers = 4) km5 &lt;- kmeans(d[,-1], centers = 5)</p>
+
+<p>bub &lt;- data.frame(ClusterNumber = 1:5, tot.within.ss = c(km1\(tot.withinss,  km2\)tot.withinss, km3\(tot.withinss,  km4\)tot.withinss, km5$tot.withinss )) ggplot(bub, aes(x = ClusterNumber, y = tot.within.ss)) + geom_line() + geom_point()</p>
+
+</article></slide><slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>Make GGplots which display parties on the plot</h2></hgroup><article  id="make-ggplots-which-display-parties-on-the-plot">
+
+<p>newd &lt;- data.frame(PC1, PC2, k = votemeans\(cluster, party = r1\)votes$party)</p>
+
+<p>plotvote &lt;- ggplot(newd, aes(x=PC1, y=PC2, color = as.factor(k))) + geom_point() plotvote</p>
+
+<p>```</p>
 
 </article></slide><slide class=''><hgroup><h2>Outliers &amp; Interesting Things</h2></hgroup><article  id="outliers-interesting-things">
 
