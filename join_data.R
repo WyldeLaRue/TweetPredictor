@@ -1,5 +1,7 @@
 library(jsonlite)
 library(dplyr)
+unzip("DataCollection/10001_house.zip", exdir = "DataCollection")
+unzip("DataCollection/50000_senate.zip", exdir = "DataCollection")
 tweet_file <- "DataCollection/sample1.json"
 senate_file <- "DataCollection/senate_sample1.json"
 tweet_list <- fromJSON(tweet_file, simplifyVector = FALSE)
@@ -78,9 +80,3 @@ rm(senate_df_1,
    senate_list,
    tweet_list,
    tweet)
-
-congress_df <- read.csv("DataCollection/legislators-current.csv") %>%
-  select(last_name, first_name, type, state, party, twitter) %>%
-  rename(party_id = party)
-
-missing <- unique(tweet_df$username)[-which(unique(tweet_df$username) %in% congress_df$twitter)]
