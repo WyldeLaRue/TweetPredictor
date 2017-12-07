@@ -1,0 +1,31 @@
+---
+title: 'Twitter and Politics: Inferring from Word Choices'
+author: "Jay Lee, Alex Moore, Tristan Wylde-Larue"
+date: "December 7, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+load("full_data.Rdata")
+```
+
+## Introduction
+
+## The Data
+
+All files referenced in this section are in the `DataCollection` folder. Our sources for data collection are the two files `representatives.txt` and `senate.txt`, taken from the GWU Libraries website. These files contain the last 3,200 tweets from every member of the 115th Congress (the current session), excepting four members of the House who don't have official Twitter accounts: Collin Peterson (D-MN-07), Lacy Clay (D-MO-01), Madeline Bordallo (Guam delegate), and Gregorio Sablan (Northern Mariana Islands delegate). Each of these files is a list of tweet IDs, which uniquely identify tweet objects in the Twitter API. Metadata about how user accounts were identified is stored in the corresponding README files. Using the script `get_twitter_data.py`, we pulled down a random sample of 10,001 tweets as from the House of Representatives (`house_sample1.json`) and 50,000 tweets from the Senate (`senate_sample1.json`).
+
+Our second data set is `legislators-current.csv`, which contains (among other variables) the following information on all current members of Congress: name, state, chamber (House or Senate), district (if House), party, website, and social media account names. We use this data set to identify the political party of each twitter account in the data set. Because this file comes from a different source than our twitter data and some politicians use multiple twitter accounts (for example, @POTUS versus @realDonaldTrump), some manual cleaning was needed to make sure all accounts in the twitter data set are present in the congress data set. In the script `add_congress_data.R`, we "fill in" this information.
+
+## Exploratory Data Analysis
+
+## Modeling
+
+## Discussion
+
+## References
+
+## Appendix
+
+
