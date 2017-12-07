@@ -5,13 +5,14 @@ date: "December 5th 2017"
 output: ioslides_presentation
 ---
 
-```{r, setup = TRUE}
+```{r, setup = TRUE, include = FALSE}
 load("full_data.RData")
 set.seed(1)
 library(ggplot2)
 library(dplyr)
 library(boot)
 library(randomForest)
+library(stringr)
 ```
 
 
@@ -42,7 +43,7 @@ plot(p1)
 
 ## Naive Logistic Model {.build}
 
-```{r}
+```{r echo = F}
 df1 <- data.frame(PC1, PC2, party = d$party_id)
 df1 <- subset(df1, party!="Independent")
 df1$party <- as.numeric(df1$party)
@@ -66,7 +67,7 @@ ggplot(pred_df, aes(x=PC1, y=PC2, col = pred, shape = as.factor(party))) +
 predicted_error <- cv.glm(data = df1, glmfit = m1, K = 5)
 ```
 
-```{r}
+```{r echo = F}
 predicted_error$delta[1]
 ```
 
@@ -75,14 +76,14 @@ predicted_error$delta[1]
 
 Skree plot - are there exactly 2 parties?
 
-```{r}
+```{r echo = F}
 km1 <- kmeans(d2, centers = 1)
 km2 <- kmeans(d2, centers = 2)
 km3 <- kmeans(d2, centers = 3)
 km4 <- kmeans(d2, centers = 4)
 km5 <- kmeans(d2, centers = 5)
-km6 <- kmeans(d2, centers = 4)
-km7 <- kmeans(d2, centers = 4)
+km6 <- kmeans(d2, centers = 6)
+km7 <- kmeans(d2, centers = 7)
 
 bub <- data.frame(ClusterNumber = 1:7,
                   tot.within.ss = c(km1$tot.withinss,
@@ -97,13 +98,13 @@ ggplot(bub, aes(x = ClusterNumber, y = tot.within.ss)) +
   geom_line() +
   geom_point()
 
-# Looks like 2 and 4 clusters encode a lot of information! There is a distinct elbow at PC = 2, which leads us to believe there are more than "Democratic" and "Republican" Tweeters! At 5 types of users, we see the best classifiers.
+# No clear elbow!!
 ```
 
 
 ## Consideration Continued
 
-```{r}
+```{r echo = F}
 means <-kmeans(x = d2, centers = 5, iter.max = 10, nstart = 20)
 df <-data.frame(PC1, PC2, k = means$cluster, user = d$twitter)
 
@@ -112,13 +113,14 @@ p1 <-ggplot(df,aes(x=PC1, y=PC2, color =as.factor(k))) + geom_point(alpha = .25)
   geom_text(aes(label = user), vjust = "inward", hjust = "inward", check_overlap = TRUE)
 plot(p1)
 ```
+
 ## Weaknesses of Previous Model {.build}
 
 * Naive
 
 ## Improved Model (Trees)
 
-```{r}
+```{r echo = F}
 pca_data <- data.frame(party_id = d$party_id, pcs)
 change_names <- full_data
 colnames(change_names) <- str_sub(colnames(change_names), "", 1)
@@ -140,9 +142,9 @@ rf_cv$n.var
 ```
 
 
-## Visualize Impoved Model
+## Visualize Improved Model
 
-```{r}
+```{r echo = F}
 pred_df <- pca_data %>%
   mutate(pred = predict(tweet_rf, newdata = pca_data, type = "response"),
          party = ifelse(party_id == "Democrat", "Democrat", "Republican"))
@@ -170,5 +172,12 @@ To expand upon this research question, "Can you predict the political party of a
 
 ## Fun Takeaways
 
+![](images/all_words_dot.png)
 
+## Fun Takeaways
 
+![](images/hash_tags_dot.png)
+
+## Fun Takeaways
+
+![](images/hash_tags_bar.png)
