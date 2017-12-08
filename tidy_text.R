@@ -17,6 +17,10 @@ group_phrases <- function(string) {
   text <- gsub("fake.?news", "fake_news", text)
   text <- gsub("gun.?control", "gun_control", text)
   text <- gsub("#?make america great again|#?maga", "maga", text)
+  text <- gsub("american ?health ?care ?act", "ahca", text)
+  text <- gsub("affordable ?care ?act", "aca", text)
+  text <- gsub("obama.?care", "obamacare", text)
+  text <- gsub("health.?care", "health_care", text)
   text <- gsub("health.?care", "health_care", text)
   text <- gsub('“|”|"|‘|’', "", text)
   text
@@ -33,11 +37,13 @@ unnest_reg <- "([^A-Za-z_\\d#@']|'(?![A-Za-z_\\d#@]))"
 tidy_tweets <- tweet_df %>% 
   mutate(text = str_replace_all(text, replace_reg, ""),
          text = removeNumbers(text),
+         text = tolower(text),
          text = group_phrases(text)) %>%
   unnest_tokens(word, text, token = "regex", pattern = unnest_reg) %>%
   filter(!word %in% stop_words$word,
          str_detect(word, "[a-z]"))
 
+# count occurrences of each word by tweet, spread users into columns
 frequency <- tidy_tweets %>% 
   group_by(username) %>% 
   count(word, sort = TRUE) %>% 
@@ -53,6 +59,7 @@ frequency <- tidy_tweets %>%
 row_exists <- apply(frequency[-1], 1, function(x) length(which(x!=0)))
 frequency <- filter(frequency, word %in% word[row_exists >= 10])
 
+# transpose to get words on columns and users on rows
 transpose_freq <- frequency %>%
   t() %>%
   data.frame(stringsAsFactors = FALSE) %>%
@@ -61,6 +68,7 @@ colnames(transpose_freq) <- c("username", transpose_freq[1, -1])
 transpose_freq <- transpose_freq[-1, ]
 rownames(transpose_freq) <- NULL
 
+# make all word frequencies (by user) numeric again, they get messed up in the transpose
 words <- colnames(transpose_freq)[-1]
 transpose_freq <- transpose_freq %>%
   mutate_at(words, as.numeric)
@@ -76,3 +84,5 @@ scaled_freq[ ,words] <- sweep(x = scaled_freq[ ,words],
                                             MARGIN = 2,
                                             STATS = max_vector,
                                             FUN = range01)
+
+full_data <- inner_join(congress_df, scaled_freq, by = c("twitter" = "username"))
