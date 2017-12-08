@@ -2,7 +2,7 @@ congress_df <- read.csv("DataCollection/legislators-current.csv",
                         stringsAsFactors = FALSE) %>%
   select(last_name, first_name, type, state, party, twitter) %>%
   rename(party_id = party,
-         chamber = type)
+         chamber_type = type)
 
 # identify which accounts present in the twitterdata aren't in the congress list
 missing <- unique(tweet_df$username)[-which(unique(tweet_df$username) %in% congress_df$twitter)]
