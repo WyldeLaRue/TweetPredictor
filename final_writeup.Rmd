@@ -1,5 +1,5 @@
 ---
-title: 'Twitter and Politics: Inferring from Word Choices'
+title: "Ain't No Party Like a Political Party"
 author: "Jay Lee, Alex Moore, Tristan Wylde-Larue"
 date: "December 7, 2017"
 output: html_document
@@ -7,7 +7,13 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(scales)
+
 load("full_data.Rdata")
+load("tidy_tweets.RData")
 ```
 
 ## Introduction
@@ -22,15 +28,27 @@ All files referenced in this section are in the [`DataCollection`](DataCollectio
 
 Our second data set is [`legislators-current.csv`](DataCollection/legislators-current.csv), which contains (among other variables) the following information on all current members of Congress: name, state, chamber (House or Senate), district (if House), party, website, and social media account names. We use this data set to identify the political party of each twitter account in the data set. Because this file comes from a different source than our twitter data and some politicians use multiple twitter accounts (for example, @POTUS versus @realDonaldTrump), some manual cleaning was needed to make sure all accounts in the twitter data set are present in the congress data set. In the script [`add_congress_data.R`](DataCollection/add_congress_data.R), we "fill in" this information, which mostly ended up just being replacements with different capitalization.
 
-Now that we have two data sets that completely match on twitter username, we can transform the data into the form we want. The [`json_to_df.R`](json_to_df.R) script takes in the tweets as JSON files, extracts the information we're interested in from each tweet, and creates a dataframe out of this. Each row of this dataframe is a tweet, and the columns are variables like tweet id, timestamp, text, and author.
+Now that we have two data sets that completely match on twitter username, we can transform the data into the form we want. The [`json_to_df.R`](json_to_df.R) script takes in the tweets as JSON files, extracts the information we're interested in from each tweet, and creates a dataframe out of this. Each row of this dataframe is a tweet, and the columns are variables like tweet id, timestamp, text, and author. The [`tidy_text.R`](tidy_text.R) script parses out the content of the tweets and counts the occurrences of each word by user, scales each row and column, then joins this with the `congress_df` dataset to make [`full_data.RData`](full_data.RData). Each row of this dataset is a user, each column is a different word used, and the entries are scale proportions of how often a user used each word.
 
 ## Exploratory Data Analysis
+
+In the file [`make_plots.R`](make_plots.R), we plot some basic results of the data.
+
+```{r echo = FALSE, warning = FALSE}
+source("make_plots.R")
+
+```
+
 
 ## Modeling
 
 ## Discussion
 
 ## References
+
+Littman, Justin, 2017. "115th U.S. Congress Tweet Ids", Harvard Dataverse, V1, http://dx.doi.org/10.7910/DVN/UIVHQR.
+
+Repository "congress-legislators" in GitHub group "unitedstates". https://theunitedstates.io/congress-legislators/legislators-current.csv.
 
 ## Appendix
 

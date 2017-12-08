@@ -123,20 +123,20 @@ reg_words_bar <- log_ratios %>%
   ggtitle("Highest Usage Difference, by Party - Regular Terms") +
   scale_fill_manual(name = "", labels = c("Democrat", "Republican"), values=c("#00BFC4","#F8766D"))
 
-ggsave(filename="images/all_words_dot.png", plot=all_words_dot)
-ggsave(filename="images/all_words_bar.png", plot=all_words_bar)
-ggsave(filename="images/user_tags_dot.png", plot=user_tags_dot)
-ggsave(filename="images/user_tags_bar.png", plot=user_tags_bar)
-ggsave(filename="images/hash_tags_dot.png", plot=hash_tags_dot)
-ggsave(filename="images/hash_tags_bar.png", plot=hash_tags_bar)
-ggsave(filename="images/reg_words_dot.png", plot=reg_words_dot)
-ggsave(filename="images/reg_words_bar.png", plot=reg_words_bar)
+#ggsave(filename="images/all_words_dot.png", plot=all_words_dot)
+#ggsave(filename="images/all_words_bar.png", plot=all_words_bar)
+#ggsave(filename="images/user_tags_dot.png", plot=user_tags_dot)
+#ggsave(filename="images/user_tags_bar.png", plot=user_tags_bar)
+#ggsave(filename="images/hash_tags_dot.png", plot=hash_tags_dot)
+#ggsave(filename="images/hash_tags_bar.png", plot=hash_tags_bar)
+#ggsave(filename="images/reg_words_dot.png", plot=reg_words_dot)
+#ggsave(filename="images/reg_words_bar.png", plot=reg_words_bar)
 
-all_words_dot
-all_words_bar
-user_tags_dot
-user_tags_bar
-hash_tags_dot
-hash_tags_bar
-reg_words_dot
-reg_words_bar
+#all_words_dot
+#all_words_bar
+#user_tags_dot
+#user_tags_bar
+#hash_tags_dot
+#hash_tags_bar
+#reg_words_dot
+#reg_words_bar
