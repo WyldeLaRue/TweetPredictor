@@ -5,7 +5,7 @@ library(scales)
 
 tidy_freqs <- tidy_tweets %>%
   filter(word %in% colnames(full_data)) %>%
-  inner_join(congress_df_short, by = c("username" = "twitter"))
+  inner_join(congress_df, by = c("username" = "twitter"))
 tidy_freqs <- tidy_freqs %>%
   mutate(total = ifelse(party_id == "Democrat",
                         sum(tidy_freqs$party_id == "Democrat"),
@@ -16,6 +16,8 @@ tidy_freqs <- tidy_freqs %>%
             prop = n/total) %>%
   select(party_id, word, prop) %>% 
   spread(party_id, prop, fill = 0)
+
+tidy_freqs <- tidy_freqs[sample(nrow(tidy_freqs)),]
 
 tidy_freqs_user_tags <- filter(tidy_freqs, str_detect(word, "^@"))
 tidy_freqs_hash_tags <- filter(tidy_freqs, str_detect(word, "^#"))
@@ -129,3 +131,12 @@ ggsave(filename="images/hash_tags_dot.png", plot=hash_tags_dot)
 ggsave(filename="images/hash_tags_bar.png", plot=hash_tags_bar)
 ggsave(filename="images/reg_words_dot.png", plot=reg_words_dot)
 ggsave(filename="images/reg_words_bar.png", plot=reg_words_bar)
+
+all_words_dot
+all_words_bar
+user_tags_dot
+user_tags_bar
+hash_tags_dot
+hash_tags_bar
+reg_words_dot
+reg_words_bar
