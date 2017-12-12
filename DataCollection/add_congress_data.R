@@ -27,7 +27,8 @@ congress_df$twitter <- replace(congress_df$twitter, list = index, values = as.ch
 chaffetz <- c("Chaffetz", "Jason", "rep", "UT", "Republican", "jasoninthehouse")
 harris2 <- c("Harris", "Kamala", "sen", "CA", "Democrat", "KamalaHarris")
 
-congress_df <- rbind(congress_df, chaffetz, harris2)
+congress_df <- rbind(congress_df, chaffetz, harris2) %>%
+  filter(twitter %in% tweet_df$username)
 
 # check all are accounted for
 length(unique(tweet_df$username)[-which(unique(tweet_df$username) %in% congress_df$twitter)])
