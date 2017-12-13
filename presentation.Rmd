@@ -105,7 +105,7 @@ ggplot(bub, aes(x = ClusterNumber, y = tot.within.ss)) +
 ## Consideration Continued
 
 ```{r echo = F}
-means <-kmeans(x = d2, centers = 5, iter.max = 10, nstart = 20)
+means <-kmeans(x = d2, centers = 4, iter.max = 10, nstart = 20)
 df <-data.frame(PC1, PC2, k = means$cluster, user = d$twitter)
 
 #Im so sorry for this
