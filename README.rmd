@@ -2,17 +2,6 @@
 Can we predict the political party of a twitter user?        
 We fit a logistic model to classify and make inferences on the political party of politician's twitters. 
 
-## Dependicies
-```{r, setup = FALSE, include = FALSE}
-load("full_data.RData")
-set.seed(1)
-library(ggplot2)
-library(dplyr)
-library(boot)
-library(randomForest)
-library(stringr)
-```
-
 ## PCA & Clustering
 
 ```{r, echo = FALSE}
