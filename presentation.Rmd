@@ -2,11 +2,11 @@
 title: "Ain't No Party Like A Political Party"
 author: "Jay Lee | Alex Moore | Tristan Wylde-Larue"
 date: "December 5th 2017"
-output: ioslides_presentation
+output: md_document
 ---
 
 ```{r, setup = TRUE, include = FALSE}
-load("full_data.RData")
+load("data/full_data.RData")
 set.seed(1)
 library(ggplot2)
 library(dplyr)
